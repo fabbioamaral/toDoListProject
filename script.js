@@ -1,5 +1,6 @@
 const btnAdd = document.querySelector('#criar-tarefa');
 const btnDeleteAll = document.querySelector('#apaga-tudo');
+const btnDeleteCompleteTasks = document.querySelector('#remover-finalizados');
 const inputTask = document.querySelector('#texto-tarefa');
 const orderedList = document.querySelector('#lista-tarefas');
 
@@ -27,7 +28,6 @@ function selectingTask(event) {
     if (checkSelected) {
         checkSelected.classList.remove('selected');
     }
-
     liTarget.classList.add('selected');
 }
 
@@ -43,8 +43,21 @@ function completingTask(event) {
 }
 
 //Função para apagar todos as tarefas da lista
-function deletingAllTasks () {
-    orderedList.innerHTML='';
+function deletingAllTasks() {
+    orderedList.innerHTML = '';
 }
 
-btnDeleteAll.onclick=deletingAllTasks;
+btnDeleteAll.onclick = deletingAllTasks;
+
+//Função para apagar as tarefas concluídas da lista
+function deleteCompleteTask() {
+    const liCompleteTask = document.querySelectorAll('li');
+    for (let i = 0; i < liCompleteTask.length; i++) {
+        if (liCompleteTask[i].classList.contains('completed')) {
+            orderedList.removeChild(liCompleteTask[i]);
+        }
+    }
+}
+
+btnDeleteCompleteTasks.onclick = deleteCompleteTask;
+
