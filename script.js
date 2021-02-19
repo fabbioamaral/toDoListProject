@@ -2,9 +2,11 @@ const btnAdd = document.querySelector('#criar-tarefa');
 const btnDeleteAll = document.querySelector('#apaga-tudo');
 const btnDeleteCompleteTasks = document.querySelector('#remover-finalizados');
 const btnSaveTasks = document.querySelector('#salvar-tarefas');
+const btnMoveUp = document.querySelector('#mover-cima');
+const btnMoveDown = document.querySelector('#mover-baixo');
+const btnRemoveSelectedTask = document.querySelector('#remover-selecionado');
 const inputTask = document.querySelector('#texto-tarefa');
 const orderedList = document.querySelector('#lista-tarefas');
-const taskList = document.querySelectorAll('li');
 
 //Função para adicionar tarefas à lista
 function addingTask() {
@@ -54,9 +56,10 @@ btnDeleteAll.onclick = deletingAllTasks;
 
 //Função para apagar as tarefas concluídas da lista
 function deleteCompleteTask() {
-    for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].classList.contains('completed')) {
-            orderedList.removeChild(taskList[i]);
+    const liCompleteTask = document.querySelectorAll('li');
+    for (let i = 0; i < liCompleteTask.length; i++) {
+        if (liCompleteTask[i].classList.contains('completed')) {
+            orderedList.removeChild(liCompleteTask[i]);
         }
     }
 }
@@ -64,15 +67,72 @@ function deleteCompleteTask() {
 btnDeleteCompleteTasks.onclick = deleteCompleteTask;
 
 //Função para salvar as tarefas 
-function savingTasks(){
+function savingTasks() {
     localStorage.setItem('tasks', orderedList.innerHTML);
 }
 
-btnSaveTasks.onclick=savingTasks;
+btnSaveTasks.onclick = savingTasks;
 
 //Condicional para exibir lista salva no localStorage (caso haja alguma) na página
-if (localStorage.getItem('tasks')){
-    orderedList.innerHTML=localStorage.getItem('tasks');
-} 
+if (localStorage.getItem('tasks')) {
+    orderedList.innerHTML = localStorage.getItem('tasks');
+}
 
+//Função para mover um item selecionado para cima
+function moveSelectedTaskUp() {
+    const liSelectedTask = document.querySelectorAll('li');
+    let temporaryTask = '';
+    let temporaryClassName = '';
+    let temporaryClassName2 = '';
+    for (let i = 1; i < liSelectedTask.length; i++) {
+        if (liSelectedTask[i].classList.contains('selected')) {
+            temporaryTask = liSelectedTask[i].innerHTML;
+            temporaryClassName = liSelectedTask[i].className;
+            temporaryClassName2 = liSelectedTask[i - 1].className;
+            liSelectedTask[i].innerHTML = liSelectedTask[i - 1].innerHTML;
+            liSelectedTask[i].className = temporaryClassName2;
+            liSelectedTask[i - 1].innerHTML = temporaryTask;
+            liSelectedTask[i - 1].className = temporaryClassName;
+        }
+    }
+}
 
+btnMoveUp.onclick = moveSelectedTaskUp;
+
+//Função para mover um item selecionado para baixo
+function moveSelectedTaskDown() {
+    const liSelectedTask = document.querySelectorAll('li');
+    let temporaryTask = '';
+    let temporaryClassName = '';
+    let temporaryClassName2 = '';
+    let index = 0;
+    for (let i = 0; i < (liSelectedTask.length - 1); i++) {
+        if (liSelectedTask[i].classList.contains('selected')) {
+            temporaryTask = liSelectedTask[i].innerHTML;
+            temporaryClassName = liSelectedTask[i].className;
+            temporaryClassName2 = liSelectedTask[i + 1].className;
+
+            liSelectedTask[i].innerHTML = liSelectedTask[i + 1].innerHTML;
+            liSelectedTask[i + 1].innerHTML = temporaryTask;
+
+            index = i;
+        }
+    }
+
+    liSelectedTask[index + 1].className = temporaryClassName;
+    liSelectedTask[index].className = temporaryClassName2;
+}
+
+btnMoveDown.onclick = moveSelectedTaskDown;
+
+//Função para remover tarefa selecionada
+function removingSelectedTask() {
+    const liSelectedTask = document.querySelectorAll('li');
+    for (let i = 0; i < liSelectedTask.length; i++) {
+        if (liSelectedTask[i].classList.contains('selected')) {
+            orderedList.removeChild(liSelectedTask[i]);
+        }
+    }
+}
+
+btnRemoveSelectedTask.onclick = removingSelectedTask;
