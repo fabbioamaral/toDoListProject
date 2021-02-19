@@ -46,6 +46,7 @@ function completingTask(event) {
     }
 }
 
+
 //Função para apagar todos as tarefas da lista
 function deletingAllTasks() {
     orderedList.innerHTML = '';
@@ -76,6 +77,16 @@ btnSaveTasks.onclick = savingTasks;
 //Condicional para exibir lista salva no localStorage (caso haja alguma) na página
 if (localStorage.getItem('tasks')) {
     orderedList.innerHTML = localStorage.getItem('tasks');
+}
+
+//Dependendo do clique, executar selecting Task ou completingTask
+const liSelectedTask = document.querySelectorAll('li');
+for (let i = 0;i < liSelectedTask.length ; i++) {
+    liSelectedTask[i].addEventListener('click', selectingTask)
+}
+
+for (let i = 0;i < liSelectedTask.length ; i++) {
+    liSelectedTask[i].addEventListener('dblclick', completingTask)
 }
 
 //Função para mover um item selecionado para cima
