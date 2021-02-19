@@ -33,9 +33,12 @@ header{
 }
 
 #texto-tarefa{
+    height: 25px;
     width: 400px;
     margin-right: 5px;
-    margin-bottom: 15px;    
+    margin-bottom: 15px;
+    padding-left:8px;
+        
 }
 
 #criar-tarefa{
@@ -64,7 +67,7 @@ button {
 }
 
 #remover-selecionado, #mover-cima, #mover-baixo {
-    width: 30px;    
+    width: 30px;
 }
 
 #remover-selecionado, #apaga-tudo{
