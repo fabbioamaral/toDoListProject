@@ -1,8 +1,10 @@
 const btnAdd = document.querySelector('#criar-tarefa');
 const btnDeleteAll = document.querySelector('#apaga-tudo');
 const btnDeleteCompleteTasks = document.querySelector('#remover-finalizados');
+const btnSaveTasks = document.querySelector('#salvar-tarefas');
 const inputTask = document.querySelector('#texto-tarefa');
 const orderedList = document.querySelector('#lista-tarefas');
+const taskList = document.querySelectorAll('li');
 
 //Função para adicionar tarefas à lista
 function addingTask() {
@@ -45,19 +47,32 @@ function completingTask(event) {
 //Função para apagar todos as tarefas da lista
 function deletingAllTasks() {
     orderedList.innerHTML = '';
+    localStorage.setItem('tasks', "");
 }
 
 btnDeleteAll.onclick = deletingAllTasks;
 
 //Função para apagar as tarefas concluídas da lista
 function deleteCompleteTask() {
-    const liCompleteTask = document.querySelectorAll('li');
-    for (let i = 0; i < liCompleteTask.length; i++) {
-        if (liCompleteTask[i].classList.contains('completed')) {
-            orderedList.removeChild(liCompleteTask[i]);
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].classList.contains('completed')) {
+            orderedList.removeChild(taskList[i]);
         }
     }
 }
 
 btnDeleteCompleteTasks.onclick = deleteCompleteTask;
+
+//Função para salvar as tarefas 
+function savingTasks(){
+    localStorage.setItem('tasks', orderedList.innerHTML);
+}
+
+btnSaveTasks.onclick=savingTasks;
+
+//Condicional para exibir lista salva no localStorage (caso haja alguma) na página
+if (localStorage.getItem('tasks')){
+    orderedList.innerHTML=localStorage.getItem('tasks');
+} 
+
 
